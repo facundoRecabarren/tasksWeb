@@ -1,0 +1,28 @@
+{% extends "tasks/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container-sm mt-5 mb-5 fs-4">
+        <div class="container rounded glasseffect">
+            <div class="row">
+                <div class="col-4 d-flex justify-content-end my-2">
+                    <img class="rounded-circle" src="{{ user.usuarios.image.url }}" alt="profileImage" id="profileImg">
+                </div>
+                <div class="col-8 align-self-center" id="profileName">
+                    {{user.first_name}} {{user.last_name}}
+                </div>
+            </div>
+        </div>
+        <div class="container fs-5 mt-3 rounded glasseffect" id="profileContainer">
+            <form class="mt-2" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {{form1|crispy}}
+                {{form2|crispy}}
+                
+                <div class="d-flex justify-content-end m-3">
+                    <button class="btn btn-warning border-dark mt-3" type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

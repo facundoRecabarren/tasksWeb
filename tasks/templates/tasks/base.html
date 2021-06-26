@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Task's Web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="shortcut icon" href="https://cdn1.iconfinder.com/data/icons/google_jfk_icons_by_carlosjj/512/tasks.png" type="image/x-icon">
+    {% if styleFolder %}
+        <link rel="stylesheet" href="{% static styleFolder %}">
+    {% endif %}
+    <style>
+        body{
+            /* background: #E8E8E8; */
+            background-image: url("/static/assets/19742.jpg")
+        }
+        #loginContainer{
+            max-width: 400px;
+        }
+        .glasseffect{
+            background: rgba( 255, 255, 255, 0.35 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 4.5px );
+            -webkit-backdrop-filter: blur( 4.5px );
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-3" href="/">
+                <img src="{% static 'assets/task_icon.png' %}" alt="App Logo" width="50">
+            </a>
+    
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Desplegar items">
+                
+                    <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav fs-5 ms-5">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tasks-home' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'tasks-tareas' %}">Tasks</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'tasks-profile' %}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="container-sm alert alert-{{message.tags}} mt-3 text-center" role="alert">
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% block content %}{% endblock content %}
+
+    <footer class="bg-dark text-white">
+        <div class="container-fluid">
+            <div class="row pt-2">
+                <div class="col-sm-4 mt-2">
+                    <h6>ABOUT</h6>
+                    <hr style="width:7ch;height:3px;color:#ffc107;">
+                    <p>
+                        This is a personal project for the University made
+                        with Django, Python, HTML5, CSS and JS.
+                    </p>
+                </div>
+                <div class="col-md-4 mt-2">
+                    <h6>Images from:</h6>
+                    <hr style="width:7ch;height:3px;color:#ffc107;">
+                    <a href="https://www.freepik.com/vectors/background">Harryarts - www.freepik.com</a>
+                    <br>
+                    <a href="https://www.freepik.com/vectors/background">starline - www.freepik.com</a>
+                </div>
+                <div class="col-md-4 mt-2">
+                    <h6>CONTACT</h6>
+                    <hr style="width:7ch;height:3px;color:#ffc107;">
+                    <p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                            <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                        </svg>
+                        San Juan, AR
+                    </p>
+                    <p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                        </svg>
+                        facunicolasrecabarren@gmail.com
+                    </p>
+                    <p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                        </svg>
+                        2644609228  
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid py-2 text-center" style="background:#000000">
+            &copy;2021 Copyright
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    {% block scripts %}{% endblock scripts %}
+</body>
+</html>

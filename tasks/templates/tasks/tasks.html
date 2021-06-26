@@ -1,0 +1,225 @@
+{% extends "tasks/base.html" %}
+{% load static %}
+{% block content %}
+
+    <div class="modal fade" id="newTaskForm" tabindex="-1" aria-labelledby="modalForm" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            {% include "tasks/newTask.html" %}
+          </div>
+        </div>
+    </div>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col d-flex justify-content-center align-items-center bg-secondary" id="actionBtns">
+                <a href="#" class="p-2" data-bs-toggle="modal" data-bs-target="#newTaskForm">
+                    New Task
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-patch-plus" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5z"/>
+                        <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% if tasks|length == 0 %}
+        <div class="container alert alert-success mt-3 text-center" role="alert">
+            You Do Not Have Tasks To Do Yet!!
+        </div>
+    {% endif %}
+
+
+    <div class="container-fluid ">
+            <!-- contenedor de las tareas -->
+                <div class="row mt-3 fs-5">
+                    <!-- CARTAS POR COMENZAR-->
+                    <div class="col-lg-4 align-items-center">
+                        <!-- <p class="text-center fw-bold">To Do</p> -->
+                        <div class="container d-flex flex-column align-items-center mb-3">
+                            <div class="card glasseffect1 glasseffect-todo" style="max-width: 18rem;width:18rem;">
+                                <div class="card-header text-center fw-bold">
+                                    To Do
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container d-flex flex-column align-items-center" id="toDo">
+                        {% for task in tasks %}
+                            {% if task.state == 'PC' %}
+                            <!-- TITULO -->
+                                <!-- <div class="card text-white bg-primary mb-3" style="max-width: 18rem;width:18rem;"> -->
+                                <div class="card mb-3 glasseffect1" style="max-width: 18rem;width:18rem;" id="id-{{task.id}}">
+                                    <div class="card-header">
+                                        {{task.title}} 
+                                        <a href="{% url 'delete-task' task.id %}" class="btn btn-sm btn-danger ms-2 float-end fw-bold text-dark">
+                                            &times;
+                                        </a>
+                                        <a href="{% url 'update-task' task.id %}" class="btn btn-sm btn-secondary ms-2 float-end fw-bold text-dark">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                                            </svg>
+                                        </a>
+                                        <a onclick="expand('{{task.id}}','arrow-{{task.id}}')" class="btn btn-sm btn-info float-end fw-bold arrow" id="arrow-{{task.id}}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                              </svg>
+                                        </a>
+                                    </div>
+                             <!-- CUERPO -->
+                                    <div class="card-body" id="{{task.id}}" style="display: none;">
+                                        <h5 class="card-title">{{task.subtitle}}</h5>
+                                        <p class="card-text">{{task.description}}</p>
+                                        <p class="card-text">Fecha: {{task.limit_date}}</p>
+                                        <a onclick="start_task('{{task.id}}')" class="btn btn-warning">Comenzar</a>
+                                        <a onclick="end_task('{{task.id}}')" class="btn btn-warning">Finalizar</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+    
+                    <!-- CARTAS EN PROCESO-->
+                    <div class="col-lg-4">
+                        <div class="container d-flex flex-column align-items-center mb-3">
+                            <div class="card glasseffect1 glasseffect-inprocess" style="max-width: 18rem;width:18rem;">
+                                <div class="card-header text-center fw-bold">
+                                    In Process
+                                </div>
+                            </div>
+                        </div>                       
+                        <div class="container d-flex flex-column align-items-center" id="inProcess">
+                        {% for task in tasks %}
+                            {% if task.state == 'EP' %}
+                            <!-- TITULO -->
+                                <!-- <div class="card text-dark bg-warning mb-3" style="max-width: 18rem;width:18rem;"> -->
+                                <div class="card mb-3 glasseffect1" style="max-width: 18rem;width:18rem;" id="id-{{task.id}}">
+                                    <div class="card-header">
+                                        {{task.title}}
+                                        <a href="{% url 'delete-task' task.id %}" class="btn btn-sm btn-danger ms-2 float-end fw-bold text-dark">
+                                            &times;
+                                        </a>
+                                        <a href="{% url 'update-task' task.id %}" class="btn btn-sm btn-secondary ms-2 float-end fw-bold text-dark">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                                            </svg>
+                                        </a>
+                                        <a onclick="expand('{{task.id}}','arrow-{{task.id}}')" class="btn btn-sm btn-info float-end fw-bold arrow" id="arrow-{{task.id}}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                <!-- CUERPO -->
+                                    <div class="card-body" id="{{task.id}}" style="display: none;">
+                                        <h5 class="card-title">{{task.subtitle}}</h5>
+                                        <p class="card-text">{{task.description}}</p>                             
+                                        <p class="card-text">Fecha: {{task.limit_date}}</p>
+                                        <a onclick="end_task('{{task.id}}')" class="btn btn-warning">Finalizar</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- CARTAS FINALIZADAS-->
+                    <div class="col-lg-4">
+                        <div class="container d-flex flex-column align-items-center mb-3">
+                            <div class="card glasseffect1 glasseffect-finished" style="max-width: 18rem;width:18rem;">
+                                <div class="card-header text-center fw-bold">
+                                    Finished
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container d-flex flex-column align-items-center" id="taskEnded">   
+                        {% for task in tasks %}
+                            {% if task.state == 'FN' %}
+                            <!-- TITULO -->
+                                <!-- <div class="card text-white bg-success mb-3" style="max-width: 18rem;width:18rem;"> -->
+                                <div class="card mb-3 glasseffect1" style="max-width: 18rem;width:18rem;">
+                                    <div class="card-header">
+                                        {{task.title}}
+                                        <!-- <a href="#" class="btn btn-sm btn-danger ms-2 float-end fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#deleteForm"> -->
+                                        <a href="{% url 'delete-task' task.id %}" class="btn btn-sm btn-danger ms-2 float-end fw-bold text-dark">
+                                            &times;
+                                        </a>
+                                        <a href="{% url 'update-task' task.id %}" class="btn btn-sm btn-secondary ms-2 float-end fw-bold text-dark">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                                            </svg>
+                                        </a>
+                                        <a onclick="expand('{{task.id}}','arrow-{{task.id}}')" class="btn btn-sm btn-info float-end fw-bold arrow" id="arrow-{{task.id}}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                                </svg>
+                                        </a>
+                                    </div>
+                            <!-- CUERPO -->
+                                    <div class="card-body" id="{{task.id}}" style="display: none;">
+                                        <h5 class="card-title">{{task.subtitle}}</h5>
+                                        <p class="card-text">{{task.description}}</p>
+                                        <p class="card-text">Fecha: {{task.limit_date}}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!--  <script>
+        
+        function expand(id,elem){
+            let arrow = document.getElementById(elem); 
+            let task = document.getElementById(id);
+            if(task.style.display === 'none'){
+                task.style.display = "initial";    
+            }
+            else{
+                task.style.display = "none";    
+            }
+            arrow.classList.toggle("arrow-active");
+        }
+
+        function start_task(task_id){
+            $.ajax({
+                url : `/tasks/${task_id}/start/`,
+                type : "POST",
+                success: function(){
+                    var card = `<div class="card mb-3 glasseffect1" style="max-width: 18rem;width:18rem;" id="id-{{task.id}}">`;
+                    card = card + $(`#id-${task_id}`).html() + "<div>";
+                    $(`#inProcess`).prepend(card);
+                    $(`#id-${task_id}`).remove();
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+        }
+
+        function start_task(task_id){
+            $.ajax({
+                url : `/tasks/${task_id}/start/`,
+                type : "POST",
+                success: function(){
+                    var card = `<div class="card mb-3 glasseffect1" style="max-width: 18rem;width:18rem;" id="id-{{task.id}}">`;
+                    card = card + $(`#id-${task_id}`).html() + "<div>";
+                    $(`#inProcess`).prepend(card);
+                    $(`#id-${task_id}`).remove();
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+        }
+    </script> -->
+{% endblock content %}
+
+{% block scripts%}
+        <script src="{% static 'js/tareas.js' %}"></script>
+{% endblock scripts %}

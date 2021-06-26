@@ -1,0 +1,68 @@
+body {
+    height: 100vh;
+    /* background: linear-gradient(to right, #dc3545,#17a2b8,#28a745); */
+}
+#actionBtns{
+    height:50px;
+}
+.card-link, #actionBtns > a{
+    color: #000 !important;
+    font-weight: bold;
+}
+.arrow{
+    transition: transform .8s ease-in-out;
+}
+.arrow-active{
+    transform: rotateZ(180deg);
+}
+.glasseffect1{
+    background: rgba( 255, 255, 255, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4.5px );
+    -webkit-backdrop-filter: blur( 4.5px );
+}
+.glasseffect-finished{
+    background: rgba(68, 255, 109, 0.35);
+}
+.glasseffect-inprocess{
+    background: rgba(253, 153, 39, 0.35);
+}
+.glasseffect-todo{
+    background: rgba(56, 250, 218, 0.35);
+}
+
+.card-body{
+    animation: fadeIn linear 1s ;
+    -webkit-animation: fadeIn linear 1s;
+    -moz-animation: fadeIn linear 1s;
+    -o-animation: fadeIn linear 1s;
+    -ms-animation: fadeIn linear 1s;
+}
+footer{
+    display: none;
+}
+
+@keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-moz-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-webkit-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}

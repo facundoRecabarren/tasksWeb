@@ -1,0 +1,15 @@
+{% extends "tasks/base.html" %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-center mt-5 text-center flex-column" style="height: 80vh;">
+    
+    <h2>Logged Out</h2>
+    <p class="fs-4">
+        Thank You for using Task's Web!!
+    </p>
+    <br>
+    <br>
+    <a class="fs-4" href="{% url 'login' %}">
+        Log In
+    </a>
+</div>
+{% endblock content %}

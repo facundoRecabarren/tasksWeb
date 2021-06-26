@@ -1,0 +1,29 @@
+{% extends "tasks/base.html" %}
+{% load static %}
+{% block content %}
+
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/delete_task.css' %}">
+{% endblock css %}
+
+<div class="conatiner-fluid d-flex justify-content-center align-items-center" id="deleteContainer">
+    <div class="container-sm rounded glasseffect mt-3 mb-5">
+        <h3 class="mt-2">Deleting Task</h3> 
+        <br>    
+        <h5>
+            Are you sure you want to DELETE: "{{object.title}}" ?
+        </h5>
+        <div class="mb-5 d-flex justify-content-end">
+            <form method="POST">
+            
+                {% csrf_token %}
+                
+                <a href="{% url 'tasks-tareas' %}" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</a>
+                <button type="submit" class="btn btn-danger" id="close">DELETE</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

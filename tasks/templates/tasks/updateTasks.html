@@ -1,0 +1,30 @@
+{% extends "tasks/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/delete_task.css' %}">
+{% endblock css %}
+
+<div class="conatiner-fluid d-flex justify-content-center align-items-center" id="#deleteContainer">
+    <div class="container-sm rounded glasseffect mt-3 mb-5">
+        <h3 class="mt-2">Update Task</h3> 
+        <br>    
+        <div class="mb-5">
+            <form method="POST">
+            
+                {% csrf_token %}
+                {{ form|crispy}}
+
+                <div class="d-flex justify-content-end align-items-center mt-3">
+                    <a href="{% url 'tasks-tareas' %}" type="button" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="ms-2 btn btn-warning">UPDATE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
